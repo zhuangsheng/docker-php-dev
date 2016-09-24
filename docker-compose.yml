@@ -1,0 +1,55 @@
+
+version: '2'
+
+services:
+   db:
+     image: mariadb:10.1
+     environment:
+        MYSQL_ROOT_PASSWORD: "root"
+        MYSQL_DATABASE: "app"
+        MYSQL_USER: "app"
+        MYSQL_PASSWORD: "123123"
+     ports:
+           - "33060:3306"
+     volumes:
+         - db:/var/lib/mysql
+   php:
+     build: 
+        context: ./services/php
+        dockerfile: Dockerfile
+     volumes:
+       - ./code:/code
+     links:
+       - db
+   nginx:
+      image: nginx:1.11.1
+      ports:
+           - "80:80"
+      depends_on:
+           - php
+      volumes_from:
+          - php
+      volumes:
+          - ./services/nginx/conf:/etc/nginx/conf.d
+   console:
+      build:
+         context: ./services/console
+         dockerfile: Dockerfile
+      volumes_from:
+         - php
+      tty: true
+   redis:
+      image: redis:3.2.1
+      ports:
+        - "6379:6379"
+   phpmyadmin:
+      image: phpmyadmin/phpmyadmin
+      ports:
+        - "8081:80"
+      environment:
+        PMA_HOST: "db"
+        PMA_USER: "root"
+        PMA_PASSWORD: "root"
+volumes:
+   db:
+      driver: local
