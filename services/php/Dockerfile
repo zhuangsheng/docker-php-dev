@@ -22,4 +22,4 @@ RUN apt-get update && apt-get install -y libpng12-dev libjpeg-dev \
 
 COPY ./config/php.ini /usr/local/etc/php/conf.d/
 COPY ./config/yaf.ini /usr/local/etc/php/conf.d/
-
+COPY ./config/php-fpm-host.conf /usr/local/etc/php-fpm.d/

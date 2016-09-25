@@ -19,6 +19,7 @@ services:
         dockerfile: Dockerfile
      volumes:
        - ./code:/code
+       - ./code/logs:/home/logs
      links:
        - db
    nginx:
