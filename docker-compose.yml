@@ -10,7 +10,7 @@ services:
         MYSQL_USER: "app"
         MYSQL_PASSWORD: "123123"
      ports:
-           - "33060:3306"
+           - "3306:3306"
      volumes:
          - db:/var/lib/mysql
    php:
@@ -22,6 +22,7 @@ services:
        - ./code/logs:/home/logs
      links:
        - db
+       - redis
    nginx:
       image: nginx:1.11.1
       ports:
